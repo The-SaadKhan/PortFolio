@@ -17,76 +17,67 @@ interface FormData {
 export default function Contact() {
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>()
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  // Add this debug log when component mounts
-  console.log('🔧 Contact component loaded')
-  console.log('Environment check:', {
-    NODE_ENV: process.env.NODE_ENV,
-    emailjsConfigured: !!(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID)
-  })
-  const onSubmit = async (data: FormData) => {
-  console.log('🚀 Form submitted with data:', data)
-  
-  try {
-    setStatus('idle')
-    
-    // Log environment variables to check if they're loaded
-    console.log('📧 EmailJS Configuration:', {
-      serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-      templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-      allAvailable: !!(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID && 
-                      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID && 
-                      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
-    })
-    
-    // Check if environment variables exist
-    if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
-        !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
-        !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
-      console.error('❌ Missing EmailJS environment variables!')
-      console.log('Make sure your .env.local file contains:')
-      console.log('NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id')
-      console.log('NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id')
-      console.log('NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key')
-      setStatus('error')
-      return
-    }
-    
-    console.log('📤 Attempting to send email via EmailJS...')
-    
-    const result = await emailjs.send(
-      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-      {
-        from_name: data.name,
-        from_email: data.email,
-        subject: data.subject,
-        message: data.message,
-        to_email: PERSONAL_INFO.email, // Your email
-      },
-      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-    )
-    
-    console.log('✅ Email sent successfully!', result)
-    setStatus('success')
-    reset()
-    
-    // Clear success message after 5 seconds
-    setTimeout(() => setStatus('idle'), 5000)
-    
-  } catch (error: any) {
-  console.error('❌ Email sending failed:', error)
-  console.log('Error details:', {
-    message: error?.message || 'Unknown error',
-    status: error?.status || 'No status',
-    text: error?.text || 'No error text'
-  })
-  setStatus('error')
-  
-  // Clear error message after 5 seconds
-  setTimeout(() => setStatus('idle'), 5000)
-}
 
+  const onSubmit = async (data: FormData) => {
+    console.log('🚀 Form submitted with data:', data)
+    
+    try {
+      setStatus('idle')
+      
+      // Log environment variables to check if they're loaded
+      console.log('📧 EmailJS Configuration:', {
+        serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+        allAvailable: !!(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID && 
+                        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID && 
+                        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
+      })
+      
+      // Check if environment variables exist
+      if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+        console.error('❌ Missing EmailJS environment variables!')
+        setStatus('error')
+        return
+      }
+      
+      console.log('📤 Attempting to send email via EmailJS...')
+      
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          subject: data.subject,
+          message: data.message,
+          to_email: PERSONAL_INFO.email,
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      )
+      
+      console.log('✅ Email sent successfully!', result)
+      setStatus('success')
+      reset()
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => setStatus('idle'), 5000)
+      
+    } catch (error: any) {
+      console.error('❌ Email sending failed:', error)
+      console.log('Error details:', {
+        message: error?.message || 'Unknown error',
+        status: error?.status || 'No status',
+        text: error?.text || 'No error text'
+      })
+      setStatus('error')
+      
+      // Clear error message after 5 seconds
+      setTimeout(() => setStatus('idle'), 5000)
+    }
+  }
 
   return (
     <section id="contact" className="py-20">
@@ -164,7 +155,7 @@ export default function Contact() {
                 )}
               </div>
 
-              {/* Message Field - WHITE TEXT */}
+              {/* Message Field */}
               <div>
                 <textarea
                   {...register('message', { required: 'Message is required' })}
@@ -269,7 +260,7 @@ export default function Contact() {
                 </div>
               </motion.a>
 
-              {/* WhatsApp - Now Clickable */}
+              {/* WhatsApp */}
               <motion.a
                 href={`https://wa.me/${PERSONAL_INFO.phone.replace(/\D/g, '')}`}
                 target="_blank"
