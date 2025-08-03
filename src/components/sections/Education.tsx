@@ -45,20 +45,20 @@ export default function Education() {
     },
     {
       level: 'Higher Secondary (12th)',
-      institution: 'Green Modern School', // Replace with actual school name
+      institution: 'Green Modern School',
       degree: 'PCM (Physics, Chemistry, Mathematics)',
       duration: '2020 - 2021',
-      grade: '78%', // Replace with actual percentage
+      grade: '78%',
       status: 'completed',
       icon: School,
       color: 'from-green-500 to-emerald-600'
     },
     {
       level: 'Secondary (10th)',
-      institution: 'hamdard Public School', // Replace with actual school name
+      institution: 'hamdard Public School',
       degree: 'CBSE Board',
       duration: '2018 - 2019',
-      grade: '84%', // Replace with actual percentage
+      grade: '84%',
       status: 'completed',
       icon: Award,
       color: 'from-orange-500 to-red-600'
@@ -89,77 +89,60 @@ export default function Education() {
           </motion.p>
         </motion.div>
 
-        {/* Education Timeline Cards */}
+        {/* Education Timeline Cards - SIMPLIFIED CLEAN DESIGN */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={containerVariants}
-          className="space-y-8 mb-16"
+          className="space-y-6 mb-16"
         >
           {educationHistory.map((education, index) => (
             <motion.div
               key={education.level}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
-              className="glass-effect rounded-2xl p-6 border border-white/20 dark:border-white/10"
+              className="glass-effect rounded-2xl p-6 border border-white/20 dark:border-white/10 relative"
             >
-              <div className="flex items-start space-x-6">
+              {/* SIMPLIFIED CARD LAYOUT */}
+              <div className="flex items-center space-x-4">
                 {/* Icon */}
                 <motion.div
                   whileHover={{ rotate: 5 }}
                   className="flex-shrink-0"
                 >
-                  <div className={`w-16 h-16 bg-gradient-to-br ${education.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-                    <education.icon className="h-8 w-8 text-white" />
+                  <div className={`w-14 h-14 bg-gradient-to-br ${education.color} rounded-2xl flex items-center justify-center shadow-lg`}>
+                    <education.icon className="h-7 w-7 text-white" />
                   </div>
                 </motion.div>
                 
-                {/* Content */}
+                {/* Content - Clean and Simple */}
                 <div className="flex-1">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                        {education.level}
-                      </h3>
-                      <p className="text-lg text-primary-600 dark:text-primary-400 font-semibold">
-                        {education.institution}
-                      </p>
-                    </div>
-                    <div className="mt-2 md:mt-0 text-right">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        education.status === 'current' 
-                          ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
-                          : 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
-                      }`}>
-                        {education.status === 'current' ? 'In Progress' : 'Completed'}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-400">
-                    <div className="flex items-center space-x-2">
-                      <Book className="h-4 w-4" />
-                      <span>{education.degree}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>{education.duration}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Award className="h-4 w-4" />
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        {education.grade}
-                      </span>
-                    </div>
-                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                    {education.level}
+                  </h3>
+                  <p className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                    {education.grade}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {education.duration}
+                  </p>
                 </div>
               </div>
+              
+              {/* Status Badge - Bottom Right Corner */}
+              <span className={`absolute bottom-4 right-4 px-3 py-1 rounded-full text-xs font-medium ${
+                education.status === 'current' 
+                  ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                  : 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+              }`}>
+                {education.status === 'current' ? 'In Progress' : 'Completed'}
+              </span>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Current University Details (Expanded) */}
+        {/* Current University Details - KEEPING ORIGINAL LAYOUT EXACTLY THE SAME */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

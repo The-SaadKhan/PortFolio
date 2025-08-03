@@ -59,7 +59,7 @@ export default function About() {
             </p>
             
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              Having solved 500+ DSA problems in C++ and participated in multiple hackathons, I combine strong 
+              Having solved 600+ DSA problems in C++ and participated in multiple hackathons, I combine strong 
               problem-solving skills with practical development experience. I'm always eager to learn new 
               technologies and contribute to innovative projects.
             </p>
@@ -95,7 +95,7 @@ export default function About() {
               className="glass-effect p-6 rounded-xl text-center"
             >
               <Code className="h-12 w-12 text-primary-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">500+</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">600+</h3>
               <p className="text-gray-600 dark:text-gray-400">DSA Problems Solved</p>
             </motion.div>
 
