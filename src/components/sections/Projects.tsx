@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Github, ExternalLink, Star, GitFork, Code } from 'lucide-react'
+import { Github, ExternalLink, Star, GitFork, Code, Calendar } from 'lucide-react'
 import { GitHubRepo } from '@/types/github'
 import { GITHUB_API_URL } from '@/utils/constants'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
@@ -58,7 +58,7 @@ export default function Projects() {
     fetchRepos()
   }, [])
 
-  // FIXED: Safe reload function
+  // RESTORED: Safe reload function
   const handleReload = () => {
     if (typeof window !== 'undefined') {
       window.location.reload()
@@ -102,6 +102,16 @@ export default function Projects() {
       'Jupyter Notebook': 'bg-orange-400'
     }
     return colors[language || ''] || 'bg-gray-500'
+  }
+
+  // RESTORED: formatDate function
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    })
   }
 
   // Function to generate a description based on repository name and language
@@ -251,9 +261,9 @@ export default function Projects() {
                   {repo.description || generateDescription(repo.name, repo.language, repo.homepage)}
                 </p>
 
-                {/* Stats Bar - REMOVED DATE SECTION */}
-                <div className="flex items-center justify-center mb-4">
-                  <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
+                {/* Stats Bar - RESTORED WITH DATE */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4" />
                       <span>{repo.stargazers_count}</span>
@@ -263,10 +273,14 @@ export default function Projects() {
                       <span>{repo.forks_count}</span>
                     </div>
                   </div>
+                  <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
+                    <Calendar className="h-4 w-4" />
+                    <span>{formatDate(repo.updated_at)}</span>
+                  </div>
                 </div>
 
-                {/* Project Status - REMOVED DATE FROM STATUS */}
-                <div className="flex items-center justify-center">
+                {/* Project Status - RESTORED WITH DATE */}
+                <div className="flex items-center justify-between">
                   {repo.homepage ? (
                     <span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full">
                       ✨ Live Demo
@@ -274,6 +288,12 @@ export default function Projects() {
                   ) : (
                     <span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full">
                       🔧 In Development
+                    </span>
+                  )}
+                  
+                  {repo.language && (
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      Updated {formatDate(repo.updated_at)}
                     </span>
                   )}
                 </div>

@@ -49,6 +49,27 @@ export default function Navbar() {
     }
   }, [])
 
+  // FIXED: Smooth scroll function for mobile navigation
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    setIsOpen(false) // Close mobile menu
+
+    if (typeof window !== 'undefined') {
+      const targetId = href.substring(1)
+      const targetElement = document.getElementById(targetId)
+      
+      if (targetElement) {
+        const navbarHeight = 80 // Account for fixed navbar height
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -85,6 +106,7 @@ export default function Navbar() {
               <motion.a
                 key={item.name}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index }}
@@ -112,12 +134,12 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Navigation Toggle */}
+          {/* Mobile Navigation Toggle - FIXED: Better visibility */}
           <div className="md:hidden flex items-center space-x-3">
             <ThemeToggle />
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg glass-effect hover:bg-white/20 dark:hover:bg-black/20 transition-colors"
+              className="p-3 rounded-xl bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 border border-gray-200 dark:border-gray-600"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -125,13 +147,17 @@ export default function Navbar() {
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
               >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isOpen ? (
+                  <X className="h-6 w-6 text-gray-800 dark:text-white" />
+                ) : (
+                  <Menu className="h-6 w-6 text-gray-800 dark:text-white" />
+                )}
               </motion.div>
             </motion.button>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation Menu - FIXED: Better contrast and functionality */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -139,22 +165,23 @@ export default function Navbar() {
               animate={{ opacity: 1, height: 'auto', y: 0 }}
               exit={{ opacity: 0, height: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="md:hidden glass-effect rounded-lg mt-2 p-4 border border-white/20 dark:border-white/10"
+              className="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-lg mt-2 p-4 shadow-xl border border-gray-200 dark:border-gray-700"
             >
               {navItems.map((item, index) => (
                 <motion.a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => setIsOpen(false)}
-                  className={`block py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
+                  className={`block py-4 px-4 rounded-lg font-medium transition-all duration-300 text-center ${
                     activeSection === item.href.substring(1)
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'
+                      : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
                   }`}
-                  whileHover={{ x: 10 }}
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   {item.name}
                 </motion.a>
