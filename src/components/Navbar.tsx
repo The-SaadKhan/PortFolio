@@ -20,7 +20,6 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home')
 
   useEffect(() => {
-    // FIXED: Safe window access with conditional check
     const handleScroll = () => {
       if (typeof window !== 'undefined') {
         setScrolled(window.scrollY > 50)
@@ -42,30 +41,38 @@ export default function Navbar() {
       }
     }
 
-    // FIXED: Only add event listeners in browser environment
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', handleScroll)
       return () => window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
-  // FIXED: Smooth scroll function for mobile navigation
+  // ENHANCED: More robust navigation function for mobile
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
-    setIsOpen(false) // Close mobile menu
-
+    setIsOpen(false) // Close mobile menu immediately
+    
     if (typeof window !== 'undefined') {
-      const targetId = href.substring(1)
+      const targetId = href.substring(1) // Remove the '#'
       const targetElement = document.getElementById(targetId)
       
       if (targetElement) {
-        const navbarHeight = 80 // Account for fixed navbar height
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        })
+        // Add a small delay to ensure menu closes first
+        setTimeout(() => {
+          const navbarHeight = 70 // Height of fixed navbar
+          const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset
+          const offsetPosition = elementTop - navbarHeight
+          
+          window.scrollTo({
+            top: Math.max(0, offsetPosition), // Ensure we don't scroll above the page
+            behavior: 'smooth'
+          })
+          
+          // Update active section immediately
+          setActiveSection(targetId)
+        }, 100)
+      } else {
+        console.log(`Element with id "${targetId}" not found`)
       }
     }
   }
@@ -75,10 +82,10 @@ export default function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled 
           ? 'glass-effect shadow-xl backdrop-blur-lg border-b border-white/10' 
-          : 'bg-transparent'
+          : 'bg-white/80 dark:bg-black/80 backdrop-blur-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,7 +117,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index }}
-                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer ${
                   activeSection === item.href.substring(1)
                     ? 'text-blue-600 dark:text-blue-400'
                     : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
@@ -134,12 +141,12 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Navigation Toggle - FIXED: Better visibility */}
+          {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center space-x-3">
             <ThemeToggle />
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-3 rounded-xl bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 border border-gray-200 dark:border-gray-600"
+              className="p-3 rounded-xl bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -157,7 +164,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu - FIXED: Better contrast and functionality */}
+        {/* Mobile Navigation Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -165,7 +172,7 @@ export default function Navbar() {
               animate={{ opacity: 1, height: 'auto', y: 0 }}
               exit={{ opacity: 0, height: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-lg mt-2 p-4 shadow-xl border border-gray-200 dark:border-gray-700"
+              className="md:hidden bg-white dark:bg-gray-900 backdrop-blur-lg rounded-xl mt-2 p-4 shadow-2xl border border-gray-200 dark:border-gray-700 mx-2"
             >
               {navItems.map((item, index) => (
                 <motion.a
@@ -175,10 +182,10 @@ export default function Navbar() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`block py-4 px-4 rounded-lg font-medium transition-all duration-300 text-center ${
+                  className={`block py-4 px-4 rounded-xl font-medium transition-all duration-300 text-center cursor-pointer touch-manipulation ${
                     activeSection === item.href.substring(1)
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'
-                      : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-800'
+                      : 'text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 border-2 border-transparent'
                   }`}
                   whileHover={{ x: 5 }}
                   whileTap={{ scale: 0.98 }}
