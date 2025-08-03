@@ -45,20 +45,20 @@ export default function Education() {
     },
     {
       level: 'Higher Secondary (12th)',
-      institution: 'Your School Name', // Replace with actual school name
+      institution: 'Green Modern School', // Replace with actual school name
       degree: 'PCM (Physics, Chemistry, Mathematics)',
-      duration: '2020 - 2022',
-      grade: '85%', // Replace with actual percentage
+      duration: '2020 - 2021',
+      grade: '78%', // Replace with actual percentage
       status: 'completed',
       icon: School,
       color: 'from-green-500 to-emerald-600'
     },
     {
       level: 'Secondary (10th)',
-      institution: 'Your School Name', // Replace with actual school name
+      institution: 'hamdard Public School', // Replace with actual school name
       degree: 'CBSE Board',
-      duration: '2019 - 2020',
-      grade: '88%', // Replace with actual percentage
+      duration: '2018 - 2019',
+      grade: '84%', // Replace with actual percentage
       status: 'completed',
       icon: Award,
       color: 'from-orange-500 to-red-600'
