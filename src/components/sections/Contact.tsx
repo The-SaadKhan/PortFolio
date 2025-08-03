@@ -74,19 +74,19 @@ export default function Contact() {
     // Clear success message after 5 seconds
     setTimeout(() => setStatus('idle'), 5000)
     
-  } catch (error) {
-    console.error('❌ Email sending failed:', error)
-    console.log('Error details:', {
-      message: error.message,
-      status: error.status,
-      text: error.text
-    })
-    setStatus('error')
-    
-    // Clear error message after 5 seconds
-    setTimeout(() => setStatus('idle'), 5000)
-  }
+  } catch (error: any) {
+  console.error('❌ Email sending failed:', error)
+  console.log('Error details:', {
+    message: error?.message || 'Unknown error',
+    status: error?.status || 'No status',
+    text: error?.text || 'No error text'
+  })
+  setStatus('error')
+  
+  // Clear error message after 5 seconds
+  setTimeout(() => setStatus('idle'), 5000)
 }
+
 
   return (
     <section id="contact" className="py-20">
