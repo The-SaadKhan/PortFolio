@@ -58,6 +58,13 @@ export default function Projects() {
     fetchRepos()
   }, [])
 
+  // FIXED: Safe reload function
+  const handleReload = () => {
+    if (typeof window !== 'undefined') {
+      window.location.reload()
+    }
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -113,7 +120,7 @@ export default function Projects() {
   }
 
   return (
-    <section id="projects" className="py-20 bg-white/50 dark:bg-black/20">
+    <section id="projects" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -154,7 +161,7 @@ export default function Projects() {
               </h3>
               <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
               <motion.button
-                onClick={() => window.location.reload()}
+                onClick={handleReload}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"

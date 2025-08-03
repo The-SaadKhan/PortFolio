@@ -20,27 +20,33 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home')
 
   useEffect(() => {
+    // FIXED: Safe window access with conditional check
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-      
-      // Update active section based on scroll position
-      const sections = navItems.map(item => item.href.substring(1))
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
+      if (typeof window !== 'undefined') {
+        setScrolled(window.scrollY > 50)
+        
+        // Update active section based on scroll position
+        const sections = navItems.map(item => item.href.substring(1))
+        const currentSection = sections.find(section => {
+          const element = document.getElementById(section)
+          if (element) {
+            const rect = element.getBoundingClientRect()
+            return rect.top <= 100 && rect.bottom >= 100
+          }
+          return false
+        })
+        
+        if (currentSection) {
+          setActiveSection(currentSection)
         }
-        return false
-      })
-      
-      if (currentSection) {
-        setActiveSection(currentSection)
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    // FIXED: Only add event listeners in browser environment
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   return (
