@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 
 export default function Loader() {
   const [progress, setProgress] = useState(0)
+  const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -20,6 +21,26 @@ export default function Loader() {
     return () => clearInterval(timer)
   }, [])
 
+  // FIXED: Safe window dimensions access
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+
+      const handleResize = () => {
+        setDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight
+        })
+      }
+
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
@@ -27,7 +48,7 @@ export default function Loader() {
       className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-gray-900 via-slate-900 to-black"
     >
       <div className="relative">
-        {/* Animated Background Elements */}
+        {/* Animated Background Elements - FIXED */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(20)].map((_, i) => (
             <motion.div
@@ -37,8 +58,8 @@ export default function Loader() {
               animate={{ 
                 opacity: [0, 1, 0],
                 scale: [0, 1, 0],
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: Math.random() * dimensions.width,  // FIXED: Use state instead of window
+                y: Math.random() * dimensions.height, // FIXED: Use state instead of window
               }}
               transition={{
                 duration: 3,
