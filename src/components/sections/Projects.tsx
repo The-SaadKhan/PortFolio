@@ -16,7 +16,9 @@ export default function Projects() {
     const fetchRepos = async () => {
       try {
         console.log('Fetching repos from:', GITHUB_API_URL)
-        const response = await fetch(GITHUB_API_URL)
+        // const response = await fetch(GITHUB_API_URL)
+        const response = await fetch('/api/github-repos')
+
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
