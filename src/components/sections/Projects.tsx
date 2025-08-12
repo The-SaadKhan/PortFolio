@@ -15,10 +15,8 @@ export default function Projects() {
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        console.log('Fetching repos from:', GITHUB_API_URL)
-        // const response = await fetch(GITHUB_API_URL)
+        console.log('Fetching repos from GitHub API...')
         const response = await fetch('/api/github-repos')
-
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
@@ -27,15 +25,14 @@ export default function Projects() {
         const data: GitHubRepo[] = await response.json()
         console.log('Raw GitHub data:', data)
         
-        // COMPLETELY SIMPLIFIED FILTERING - Only exclude forks and profile repo
+        // Filter and sort repos
         const filteredRepos = data
           .filter(repo => {
-            console.log(`Checking repo: ${repo.name}, Fork: ${repo.fork}`)
+            console.log(`Checking repo: ${repo.name}, Fork: ${repo.fork}, Homepage: ${repo.homepage}`)
             
             return (
               !repo.fork && // Exclude forks
               repo.name !== 'The-SaadKhan' // Exclude profile repository
-              // NO OTHER FILTERS - show ALL other public repos
             )
           })
           .sort((a, b) => {
@@ -60,10 +57,35 @@ export default function Projects() {
     fetchRepos()
   }, [])
 
-  // RESTORED: Safe reload function
+  // Safe reload function
   const handleReload = () => {
     if (typeof window !== 'undefined') {
       window.location.reload()
+    }
+  }
+
+  // Manual deployment URLs for immediate fix
+  const DEPLOYED_PROJECTS = {
+    'AI-COURSES': 'https://ai-courses-alpha.vercel.app',
+    // Add other deployed projects here as needed
+  }
+
+  // Enhanced deployment detection with manual fallback
+  const getDeploymentInfo = (repo) => {
+    // Check manual config first (immediate fix)
+    const manualUrl = DEPLOYED_PROJECTS[repo.name]
+    
+    // Check GitHub homepage field
+    const githubHomepage = repo.homepage && 
+      repo.homepage.trim() !== '' && 
+      (repo.homepage.startsWith('http://') || repo.homepage.startsWith('https://'))
+    
+    // Use manual URL first, then GitHub homepage
+    const deploymentUrl = manualUrl || (githubHomepage ? repo.homepage : null)
+    
+    return {
+      hasDeployment: !!deploymentUrl,
+      deploymentUrl
     }
   }
 
@@ -101,12 +123,13 @@ export default function Projects() {
       PHP: 'bg-purple-500',
       Java: 'bg-red-500',
       React: 'bg-cyan-500',
-      'Jupyter Notebook': 'bg-orange-400'
+      Vue: 'bg-green-400',
+      'Jupyter Notebook': 'bg-orange-400',
+      'Next.js': 'bg-black'
     }
     return colors[language || ''] || 'bg-gray-500'
   }
 
-  // RESTORED: formatDate function
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', { 
@@ -116,11 +139,16 @@ export default function Projects() {
     })
   }
 
-  // Function to generate a description based on repository name and language
-  const generateDescription = (name: string, language: string | null, homepage: string | null) => {
+  // Enhanced description generation
+  const generateDescription = (name: string, language: string | null, hasDeployment: boolean) => {
     const cleanName = name.replace(/-/g, ' ').replace(/_/g, ' ')
     
-    if (homepage) {
+    // Special descriptions for known projects
+    if (name === 'AI-COURSES') {
+      return 'AI-powered course generation platform built with Next.js. Create comprehensive courses using artificial intelligence with interactive learning features.'
+    }
+    
+    if (hasDeployment) {
       return `${cleanName} - A ${language || 'web'} project with live demo available.`
     }
     
@@ -206,101 +234,103 @@ export default function Projects() {
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {repos.map((repo) => (
-              <motion.div
-                key={repo.id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.02, y: -8 }}
-                className="glass-effect rounded-xl p-6 group hover:shadow-2xl transition-all duration-300 border border-white/20 dark:border-white/10"
-              >
-                {/* Project Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-2">
-                      {repo.name.replace(/-/g, ' ')}
-                    </h3>
-                    {repo.language && (
-                      <div className="flex items-center space-x-2">
-                        <div className={`w-3 h-3 rounded-full ${getLanguageColor(repo.language)}`} />
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          {repo.language}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="flex space-x-2 ml-4">
-                    <motion.a
-                      href={repo.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                      title="View on GitHub"
-                    >
-                      <Github className="h-4 w-4" />
-                    </motion.a>
-                    {repo.homepage && (
+            {repos.map((repo) => {
+              const { hasDeployment, deploymentUrl } = getDeploymentInfo(repo)
+              
+              return (
+                <motion.div
+                  key={repo.id}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02, y: -8 }}
+                  className="glass-effect rounded-xl p-6 group hover:shadow-2xl transition-all duration-300 border border-white/20 dark:border-white/10"
+                >
+                  {/* Project Header */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-2">
+                        {repo.name === 'AI-COURSES' ? 'AI Course Generator' : repo.name.replace(/-/g, ' ')}
+                      </h3>
+                      {repo.language && (
+                        <div className="flex items-center space-x-2">
+                          <div className={`w-3 h-3 rounded-full ${getLanguageColor(repo.language)}`} />
+                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                            {repo.language}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex space-x-2 ml-4">
                       <motion.a
-                        href={repo.homepage}
+                        href={repo.html_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white transition-colors"
-                        title="Live Demo"
+                        className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                        title="View on GitHub"
                       >
-                        <ExternalLink className="h-4 w-4" />
+                        <Github className="h-4 w-4" />
                       </motion.a>
+                      {hasDeployment && (
+                        <motion.a
+                          href={deploymentUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="p-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white transition-colors"
+                          title="Live Demo"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </motion.a>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
+                    {repo.description || generateDescription(repo.name, repo.language, hasDeployment)}
+                  </p>
+
+                  {/* Stats Bar */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4" />
+                        <span>{repo.stargazers_count}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <GitFork className="h-4 w-4" />
+                        <span>{repo.forks_count}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
+                      <Calendar className="h-4 w-4" />
+                      <span>{formatDate(repo.updated_at)}</span>
+                    </div>
+                  </div>
+
+                  {/* Project Status */}
+                  <div className="flex items-center justify-between">
+                    {hasDeployment ? (
+                      <span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full">
+                        ✨ Live Demo
+                      </span>
+                    ) : (
+                      <span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full">
+                        🔧 In Development
+                      </span>
                     )}
-                  </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
-                  {repo.description || generateDescription(repo.name, repo.language, repo.homepage)}
-                </p>
-
-                {/* Stats Bar - RESTORED WITH DATE */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4" />
-                      <span>{repo.stargazers_count}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <GitFork className="h-4 w-4" />
-                      <span>{repo.forks_count}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
-                    <Calendar className="h-4 w-4" />
-                    <span>{formatDate(repo.updated_at)}</span>
-                  </div>
-                </div>
-
-                {/* Project Status - RESTORED WITH DATE */}
-                <div className="flex items-center justify-between">
-                  {repo.homepage ? (
-                    <span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full">
-                      ✨ Live Demo
-                    </span>
-                  ) : (
-                    <span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full">
-                      🔧 In Development
-                    </span>
-                  )}
-                  
-                  {repo.language && (
+                    
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                       Updated {formatDate(repo.updated_at)}
                     </span>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+                  </div>
+                </motion.div>
+              )
+            })}
           </motion.div>
         )}
 
