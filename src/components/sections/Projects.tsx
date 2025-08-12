@@ -64,14 +64,14 @@ export default function Projects() {
     }
   }
 
-  // Manual deployment URLs for immediate fix
-  const DEPLOYED_PROJECTS = {
+  // Manual deployment URLs for immediate fix - TYPED PROPERLY
+  const DEPLOYED_PROJECTS: Record<string, string> = {
     'AI-COURSES': 'https://ai-courses-alpha.vercel.app',
     // Add other deployed projects here as needed
   }
 
-  // Enhanced deployment detection with manual fallback
-  const getDeploymentInfo = (repo) => {
+  // Enhanced deployment detection with manual fallback - FIXED TYPE ERROR
+  const getDeploymentInfo = (repo: GitHubRepo) => {
     // Check manual config first (immediate fix)
     const manualUrl = DEPLOYED_PROJECTS[repo.name]
     
@@ -275,7 +275,7 @@ export default function Projects() {
                       </motion.a>
                       {hasDeployment && (
                         <motion.a
-                          href={deploymentUrl}
+                          href={deploymentUrl || ''}
                           target="_blank"
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.1 }}
