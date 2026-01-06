@@ -161,11 +161,22 @@ export default function Projects() {
   }
 
   return (
-    <section id="projects" className="relative py-12 bg-black overflow-hidden">
-      {/* Simplified background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50"></div>
+    <section id="projects" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-20">
+      {/* Animated Background - similar to hero */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              radial-gradient(125% 125% at 50% 10%, #ffffff00 40%, #13131300 100%)
+            `,
+            backgroundSize: "100% 100%",
+          }}
+        />
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#a3a3a32e_1px,transparent_1px),linear-gradient(to_bottom,#a3a3a32e_1px,transparent_1px)] bg-[size:70px_70px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+      </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -183,12 +194,10 @@ export default function Projects() {
               💼 My Work
             </span>
           </motion.div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-            <span className="bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-500 bg-clip-text text-transparent">
-              Featured Projects
-            </span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
+            Featured <span className="bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 bg-clip-text text-transparent">Projects</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto text-center">
+          <p className="text-sm sm:text-base md:text-lg text-orange-100/80 max-w-3xl mx-auto px-4 text-center">
             A showcase of my latest GitHub projects demonstrating full-stack development and problem-solving skills
           </p>
         </motion.div>
@@ -196,7 +205,7 @@ export default function Projects() {
         {loading ? (
           <div className="text-center">
             <LoadingSpinner />
-            <p className="mt-4 text-gray-400">Loading projects from GitHub...</p>
+            <p className="mt-4 text-orange-200/80">Loading projects from GitHub...</p>
           </div>
         ) : error ? (
           <motion.div
@@ -206,11 +215,11 @@ export default function Projects() {
           >
             <GlowingCard glowColor="rgba(239, 68, 68, 0.4)">
               <div className="text-center py-8">
-                <Code className="h-16 w-16 text-red-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <Code className="h-16 w-16 text-orange-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-orange-100 mb-2">
                   Unable to Load Projects
                 </h3>
-                <p className="text-red-400 mb-4">{error}</p>
+                <p className="text-orange-200/80 mb-4">{error}</p>
                 <motion.button
                   onClick={handleReload}
                   whileHover={{ scale: 1.05 }}
@@ -230,11 +239,11 @@ export default function Projects() {
           >
             <GlowingCard>
               <div className="text-center py-8">
-                <Github className="h-16 w-16 text-gray-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <Github className="h-16 w-16 text-orange-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-orange-100 mb-2">
                   No Projects Found
                 </h3>
-                <p className="text-gray-400 mb-4">
+                <p className="text-orange-200/80 mb-4">
                   Check console for debugging information.
                 </p>
               </div>
@@ -250,13 +259,13 @@ export default function Projects() {
                   {/* Project Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors mb-2">
+                      <h3 className="text-lg font-bold text-orange-100 group-hover:text-orange-300 transition-colors mb-2">
                         {repo.name === 'AI-COURSES' ? 'AI Course Generator' : repo.name.replace(/-/g, ' ')}
                       </h3>
                       {repo.language && (
                         <div className="flex items-center space-x-2">
                           <div className={`w-3 h-3 rounded-full ${getLanguageColor(repo.language)}`} />
-                          <span className="text-sm font-medium text-gray-400">
+                          <span className="text-sm font-medium text-orange-200/60">
                             {repo.language}
                           </span>
                         </div>
@@ -271,10 +280,10 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                        className="p-2 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 border border-orange-400/20 transition-colors"
                         title="View on GitHub"
                       >
-                        <Github className="h-4 w-4 text-white" />
+                        <Github className="h-4 w-4 text-orange-300" />
                       </motion.a>
                       {hasDeployment && (
                         <motion.a
@@ -293,13 +302,13 @@ export default function Projects() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-gray-400 mb-4 text-sm leading-relaxed">
+                  <p className="text-orange-200/70 mb-4 text-sm leading-relaxed">
                     {repo.description || generateDescription(repo.name, repo.language, hasDeployment)}
                   </p>
 
                   {/* Stats Bar */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-4 text-sm text-orange-200/50">
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4" />
                         <span>{repo.stargazers_count}</span>
@@ -309,7 +318,7 @@ export default function Projects() {
                         <span>{repo.forks_count}</span>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-1 text-sm text-gray-500">
+                    <div className="flex items-center space-x-1 text-sm text-orange-200/50">
                       <Calendar className="h-4 w-4" />
                       <span>{formatDate(repo.updated_at)}</span>
                     </div>
@@ -318,16 +327,16 @@ export default function Projects() {
                   {/* Project Status */}
                   <div className="flex items-center justify-between">
                     {hasDeployment ? (
-                      <span className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded-full border border-green-500/30">
+                      <span className="px-2 py-1 text-xs bg-orange-500/20 text-orange-400 rounded-full border border-orange-500/30">
                         ✨ Live Demo
                       </span>
                     ) : (
-                      <span className="px-2 py-1 text-xs bg-blue-500/20 text-blue-400 rounded-full border border-blue-500/30">
+                      <span className="px-2 py-1 text-xs bg-yellow-500/20 text-yellow-400 rounded-full border border-yellow-500/30">
                         🔧 In Development
                       </span>
                     )}
                     
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-orange-200/50">
                       Updated {formatDate(repo.updated_at)}
                     </span>
                   </div>

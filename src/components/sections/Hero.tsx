@@ -22,7 +22,7 @@ export default function Hero() {
       <AnimatedShaderHero
         trustBadge={{
           text: `${PERSONAL_INFO.university} • CSE Student • Hackathon Finalist`,
-          icons: ['✨']
+          icons: []
         }}
         headline={{
           line1: `Hi, I'm ${PERSONAL_INFO.name}`,
