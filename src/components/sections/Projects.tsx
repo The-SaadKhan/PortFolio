@@ -329,7 +329,7 @@ export default function Projects() {
                   <div className="flex items-center justify-between">
                     {hasDeployment ? (
                       <span className="px-2 py-1 text-xs bg-orange-500/20 text-orange-400 rounded-full border border-orange-500/30">
-                        ✨ Live Demo
+                         Live
                       </span>
                     ) : (
                       <span className="px-2 py-1 text-xs bg-yellow-500/20 text-yellow-400 rounded-full border border-yellow-500/30">
