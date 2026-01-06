@@ -154,7 +154,7 @@ export default function Education() {
   ]
 
   return (
-    <section id="education" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-20">
+    <section id="education" className="relative py-12 flex items-center justify-center overflow-hidden bg-black">
       {/* Animated Background - similar to hero */}
       <div className="absolute inset-0 z-0">
         <div

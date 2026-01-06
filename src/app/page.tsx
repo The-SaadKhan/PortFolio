@@ -34,17 +34,26 @@ export default function Home() {
       </AnimatePresence>
       
       {mounted && (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-slate-900 dark:to-black transition-all duration-500">
+        <div className="min-h-screen bg-black relative">
+          {/* Simplified global background */}
+          <div className="fixed inset-0 z-0 bg-black">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f0a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f0a_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/80"></div>
+          </div>
+          
           <Navbar />
-          <main className="relative overflow-x-hidden">
-            <Hero />
-            <About />
-            <Skills />
-            <Education />
-            <Projects />
-            <Contact />
-          </main>
-          <Footer />
+          
+          <div className="relative z-10">
+            <main className="relative">
+              <Hero />
+              <About />
+              <Skills />
+              <Education />
+              <Projects />
+              <Contact />
+            </main>
+            <Footer />
+          </div>
         </div>
       )}
     </>

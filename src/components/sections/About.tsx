@@ -7,19 +7,10 @@ export default function About() {
   const heroRef = useRef<HTMLDivElement>(null)
 
   return (
-    <section id="about" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black" ref={heroRef}>
-      {/* Animated Background - similar to hero */}
+    <section id="about" className="relative py-12 flex items-center justify-center overflow-hidden bg-black" ref={heroRef}>
+      {/* Simplified Background */}
       <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              radial-gradient(125% 125% at 50% 10%, #ffffff00 40%, #13131300 100%)
-            `,
-            backgroundSize: "100% 100%",
-          }}
-        />
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#a3a3a32e_1px,transparent_1px),linear-gradient(to_bottom,#a3a3a32e_1px,transparent_1px)] bg-[size:70px_70px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50"></div>
       </div>
 
       {/* Section Header */}

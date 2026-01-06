@@ -16,8 +16,8 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-white/80 dark:bg-black/40 backdrop-blur-sm border-t border-white/20 dark:border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="bg-black border-t border-orange-500/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <motion.div
@@ -26,8 +26,8 @@ export default function Footer() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <h3 className="text-2xl font-bold gradient-text">Saad Khan</h3>
-            <p className="text-gray-600 dark:text-gray-400 max-w-md">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-500 bg-clip-text text-transparent">Saad Khan</h3>
+            <p className="text-gray-400 max-w-md">
               DSA Expert & Full Stack Developer passionate about creating innovative solutions 
               and solving complex problems.
             </p>
@@ -41,7 +41,7 @@ export default function Footer() {
             transition={{ delay: 0.1 }}
             className="space-y-4"
           >
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Links</h4>
+            <h4 className="text-lg font-semibold text-white">Quick Links</h4>
             <div className="grid grid-cols-2 gap-2">
               {['Home', 'About', 'Skills','Education', 'Projects', 'Contact'].map((item) => (
                 <motion.a

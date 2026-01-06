@@ -28,6 +28,33 @@ interface HeroProps {
 const useShaderBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
+  const [isLowPerformance, setIsLowPerformance] = useState(false);
+
+  useEffect(() => {
+    // Detect performance
+    const fps = 60;
+    let lastTime = performance.now();
+    let frames = 0;
+    
+    const checkPerformance = () => {
+      frames++;
+      const currentTime = performance.now();
+      if (currentTime >= lastTime + 1000) {
+        const currentFps = Math.round(frames * 1000 / (currentTime - lastTime));
+        if (currentFps < 30) {
+          setIsLowPerformance(true);
+        }
+        frames = 0;
+        lastTime = currentTime;
+      }
+    };
+
+    const perfCheck = setInterval(checkPerformance, 1000);
+    
+    setTimeout(() => clearInterval(perfCheck), 5000);
+    
+    return () => clearInterval(perfCheck);
+  }, []);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const pointersRef = useRef<PointerHandler | null>(null);
 

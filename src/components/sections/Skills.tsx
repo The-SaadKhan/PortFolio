@@ -59,7 +59,7 @@ const skillItems: BentoItem[] = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-20">
+    <section id="skills" className="relative py-12 flex items-center justify-center overflow-hidden bg-black">
       {/* Animated Background - similar to hero */}
       <div className="absolute inset-0 z-0">
         <div
