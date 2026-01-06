@@ -42,6 +42,7 @@ export default function Projects() {
             const dateB = new Date(b.updated_at).getTime()
             return dateB - dateA
           })
+          .slice(0, 5) // Limit to 5 projects
         
         console.log('Filtered repos count:', filteredRepos.length)
         console.log('Filtered repos:', filteredRepos)

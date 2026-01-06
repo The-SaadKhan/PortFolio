@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const res = await fetch('https://api.github.com/users/The-SaadKhan/repos?per_page=50&sort=updated', {
+    const res = await fetch('https://api.github.com/users/The-SaadKhan/repos?per_page=100&sort=updated', {
       headers: {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
         Accept: 'application/vnd.github.v3+json'
