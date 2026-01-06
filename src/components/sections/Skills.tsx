@@ -1,93 +1,92 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { BentoGrid, type BentoItem } from '@/components/ui/bento-grid'
+import { Code2, Layers, Database, Cloud, Wrench, Cpu } from 'lucide-react'
 import { SKILLS } from '@/utils/constants'
 
-const skillCategories = [
-  { name: 'Programming Languages', skills: SKILLS.programming, color: 'from-blue-500 to-cyan-500' },
-  { name: 'Frontend', skills: SKILLS.frontend, color: 'from-green-500 to-emerald-500' },
-  { name: 'Backend', skills: SKILLS.backend, color: 'from-purple-500 to-violet-500' },
-  { name: 'Databases', skills: SKILLS.databases, color: 'from-orange-500 to-red-500' },
-  { name: 'Cloud & DevOps', skills: SKILLS.cloud, color: 'from-pink-500 to-rose-500' },
-  { name: 'Tools', skills: SKILLS.tools, color: 'from-indigo-500 to-blue-500' },
+const skillItems: BentoItem[] = [
+  {
+    title: 'Programming Languages',
+    meta: `${SKILLS.programming.length} languages`,
+    description: 'Proficient in multiple programming languages with strong focus on C++, JavaScript, and TypeScript',
+    icon: <Code2 className="w-4 h-4 text-orange-400" />,
+    status: 'Expert',
+    tags: SKILLS.programming.slice(0, 4),
+    colSpan: 2,
+    hasPersistentHover: true,
+  },
+  {
+    title: 'Frontend Development',
+    meta: `${SKILLS.frontend.length} frameworks`,
+    description: 'Modern frontend technologies with React, Next.js, and Tailwind CSS',
+    icon: <Layers className="w-4 h-4 text-yellow-400" />,
+    status: 'Advanced',
+    tags: SKILLS.frontend.slice(0, 3),
+  },
+  {
+    title: 'Backend & APIs',
+    meta: `${SKILLS.backend.length} technologies`,
+    description: 'Server-side development with Node.js, Express.js, and RESTful APIs',
+    icon: <Cpu className="w-4 h-4 text-amber-400" />,
+    status: 'Proficient',
+    tags: SKILLS.backend.slice(0, 3),
+    colSpan: 2,
+  },
+  {
+    title: 'Databases',
+    meta: `${SKILLS.databases.length} systems`,
+    description: 'Database design and management across SQL and NoSQL platforms',
+    icon: <Database className="w-4 h-4 text-orange-500" />,
+    tags: SKILLS.databases.slice(0, 3),
+  },
+  {
+    title: 'Cloud & DevOps',
+    meta: `${SKILLS.cloud.length} platforms`,
+    description: 'Cloud deployment and infrastructure with GCP, Firebase, and Vercel',
+    icon: <Cloud className="w-4 h-4 text-yellow-500" />,
+    status: 'Active',
+    tags: SKILLS.cloud.slice(0, 3),
+  },
+  {
+    title: 'Development Tools',
+    meta: `${SKILLS.tools.length} tools`,
+    description: 'Version control, API testing, and development environment setup',
+    icon: <Wrench className="w-4 h-4 text-amber-500" />,
+    tags: SKILLS.tools.slice(0, 3),
+    colSpan: 2,
+  },
 ]
 
 export default function Skills() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  }
-
   return (
-    <section id="skills" className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={containerVariants}
-          className="text-center mb-16"
-        >
-          <motion.h2
-            variants={itemVariants}
-            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-          >
-            Technical <span className="gradient-text">Skills</span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-          >
-            Proficient in modern technologies across the full stack development spectrum
-          </motion.p>
-        </motion.div>
+    <section id="skills" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-20">
+      {/* Animated Background - similar to hero */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              radial-gradient(125% 125% at 50% 10%, #ffffff00 40%, #13131300 100%)
+            `,
+            backgroundSize: "100% 100%",
+          }}
+        />
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#a3a3a32e_1px,transparent_1px),linear-gradient(to_bottom,#a3a3a32e_1px,transparent_1px)] bg-[size:70px_70px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+      </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={category.name}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              className="glass-effect rounded-xl p-6"
-            >
-              <div className={`h-1 w-full bg-gradient-to-r ${category.color} rounded-full mb-4`} />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                {category.name}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill, skillIndex) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="px-3 py-1 text-sm bg-white/20 dark:bg-black/20 rounded-full text-gray-700 dark:text-gray-300 border border-white/30 dark:border-white/10"
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+      <div className="relative z-10 w-full">
+        {/* Section Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
+            Technical <span className="bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 bg-clip-text text-transparent">Skills</span>
+          </h2>
+          <p className="text-sm sm:text-base md:text-lg text-orange-100/80 max-w-3xl mx-auto px-4">
+            Proficient in modern technologies across the full stack development spectrum
+          </p>
+        </div>
+
+        {/* Bento Grid */}
+        <BentoGrid items={skillItems} />
       </div>
     </section>
   )

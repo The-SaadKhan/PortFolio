@@ -6,6 +6,7 @@ import { Github, ExternalLink, Star, GitFork, Code, Calendar } from 'lucide-reac
 import { GitHubRepo } from '@/types/github'
 import { GITHUB_API_URL } from '@/utils/constants'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { GlowingCard } from '../ui/glowing-effect'
 
 export default function Projects() {
   const [repos, setRepos] = useState<GitHubRepo[]>([])
@@ -160,33 +161,43 @@ export default function Projects() {
   }
 
   return (
-    <section id="projects" className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="relative py-20 bg-black overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black"></div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <motion.div
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          variants={containerVariants}
           className="text-center mb-16"
         >
-          <motion.h2
-            variants={itemVariants}
-            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="flex justify-center mb-4"
           >
-            Featured <span className="gradient-text">Projects</span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-          >
+            <span className="px-4 py-2 rounded-full border border-orange-500/20 bg-orange-500/10 text-orange-400 text-sm font-medium">
+              💼 My Work
+            </span>
+          </motion.div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
+            <span className="bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-500 bg-clip-text text-transparent">
+              Featured Projects
+            </span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto text-center">
             A showcase of my latest GitHub projects demonstrating full-stack development and problem-solving skills
-          </motion.p>
+          </p>
         </motion.div>
 
         {loading ? (
           <div className="text-center">
             <LoadingSpinner />
-            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading projects from GitHub...</p>
+            <p className="mt-4 text-gray-400">Loading projects from GitHub...</p>
           </div>
         ) : error ? (
           <motion.div
@@ -194,21 +205,23 @@ export default function Projects() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <div className="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
-              <Code className="h-16 w-16 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Unable to Load Projects
-              </h3>
-              <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-              <motion.button
-                onClick={handleReload}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-              >
-                Try Again
-              </motion.button>
-            </div>
+            <GlowingCard glowColor="rgba(239, 68, 68, 0.4)">
+              <div className="text-center py-8">
+                <Code className="h-16 w-16 text-red-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Unable to Load Projects
+                </h3>
+                <p className="text-red-400 mb-4">{error}</p>
+                <motion.button
+                  onClick={handleReload}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-orange-500 to-yellow-500 text-black px-6 py-2 rounded-lg font-medium transition-all hover:shadow-lg hover:shadow-orange-500/50"
+                >
+                  Try Again
+                </motion.button>
+              </div>
+            </GlowingCard>
           </motion.div>
         ) : repos.length === 0 ? (
           <motion.div
@@ -216,44 +229,35 @@ export default function Projects() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <div className="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
-              <Github className="h-16 w-16 text-gray-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                No Projects Found
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Check console for debugging information.
-              </p>
-            </div>
+            <GlowingCard>
+              <div className="text-center py-8">
+                <Github className="h-16 w-16 text-gray-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  No Projects Found
+                </h3>
+                <p className="text-gray-400 mb-4">
+                  Check console for debugging information.
+                </p>
+              </div>
+            </GlowingCard>
           </motion.div>
         ) : (
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {repos.map((repo) => {
               const { hasDeployment, deploymentUrl } = getDeploymentInfo(repo)
               
               return (
-                <motion.div
-                  key={repo.id}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -8 }}
-                  className="glass-effect rounded-xl p-6 group hover:shadow-2xl transition-all duration-300 border border-white/20 dark:border-white/10"
-                >
+                <GlowingCard key={repo.id}>
                   {/* Project Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-2">
+                      <h3 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors mb-2">
                         {repo.name === 'AI-COURSES' ? 'AI Course Generator' : repo.name.replace(/-/g, ' ')}
                       </h3>
                       {repo.language && (
                         <div className="flex items-center space-x-2">
                           <div className={`w-3 h-3 rounded-full ${getLanguageColor(repo.language)}`} />
-                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          <span className="text-sm font-medium text-gray-400">
                             {repo.language}
                           </span>
                         </div>
@@ -268,10 +272,10 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                        className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
                         title="View on GitHub"
                       >
-                        <Github className="h-4 w-4" />
+                        <Github className="h-4 w-4 text-white" />
                       </motion.a>
                       {hasDeployment && (
                         <motion.a
@@ -280,7 +284,7 @@ export default function Projects() {
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          className="p-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white transition-colors"
+                          className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-yellow-500 text-black transition-colors hover:shadow-lg hover:shadow-orange-500/50"
                           title="Live Demo"
                         >
                           <ExternalLink className="h-4 w-4" />
@@ -290,13 +294,13 @@ export default function Projects() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
+                  <p className="text-gray-400 mb-4 text-sm leading-relaxed">
                     {repo.description || generateDescription(repo.name, repo.language, hasDeployment)}
                   </p>
 
                   {/* Stats Bar */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center space-x-4 text-sm text-gray-500">
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4" />
                         <span>{repo.stargazers_count}</span>
@@ -306,7 +310,7 @@ export default function Projects() {
                         <span>{repo.forks_count}</span>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center space-x-1 text-sm text-gray-500">
                       <Calendar className="h-4 w-4" />
                       <span>{formatDate(repo.updated_at)}</span>
                     </div>
@@ -315,23 +319,23 @@ export default function Projects() {
                   {/* Project Status */}
                   <div className="flex items-center justify-between">
                     {hasDeployment ? (
-                      <span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full">
+                      <span className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded-full border border-green-500/30">
                         ✨ Live Demo
                       </span>
                     ) : (
-                      <span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full">
+                      <span className="px-2 py-1 text-xs bg-blue-500/20 text-blue-400 rounded-full border border-blue-500/30">
                         🔧 In Development
                       </span>
                     )}
                     
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-gray-500">
                       Updated {formatDate(repo.updated_at)}
                     </span>
                   </div>
-                </motion.div>
+                </GlowingCard>
               )
             })}
-          </motion.div>
+          </div>
         )}
 
         {/* View All Projects Button */}
@@ -345,7 +349,7 @@ export default function Projects() {
             href="https://github.com/The-SaadKhan?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl"
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-black px-8 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:shadow-orange-500/50"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
