@@ -27,8 +27,8 @@ const stats: StatItem[] = [
   {
     id: 2,
     title: "DSA Expertise",
-    description: "Solved 600+ data structures and algorithms problems in C++. Strong foundation in problem-solving with focus on optimized solutions and competitive programming techniques.",
-    stat: "600+",
+    description: "Solved 800+ data structures and algorithms problems in C++. Strong foundation in problem-solving with focus on optimized solutions and competitive programming techniques.",
+    stat: "800+",
     label: "Problems Solved • C++",
     icon: Code,
     gradient: "from-yellow-500 to-amber-500"
@@ -45,9 +45,9 @@ const stats: StatItem[] = [
   {
     id: 4,
     title: "Achievements",
-    description: "Top 10 finalist in multiple hackathons. Maintained 8.4 CGPA while actively contributing to innovative projects and participating in competitive programming contests.",
+    description: "Top 10 finalist in multiple hackathons. Maintained 8.5 CGPA while actively contributing to innovative projects and participating in competitive programming contests.",
     stat: "Top 10",
-    label: "Hackathon Finalist • 8.4 CGPA",
+    label: "Hackathon Finalist • 8.5 CGPA",
     icon: Award,
     gradient: "from-orange-600 to-red-500"
   }

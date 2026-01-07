@@ -48,24 +48,6 @@ export default function Education() {
               </span>
             </div>
           </div>
-          
-          {/* Key Coursework */}
-          {/* <div className="mt-6">
-            <h4 className="text-sm font-semibold text-orange-200 mb-3 flex items-center gap-2">
-              <Book className="w-4 h-4" />
-              Key Coursework & Specializations
-            </h4>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-              {coursework.map((course) => (
-                <div
-                  key={course}
-                  className="bg-orange-500/10 rounded-lg px-3 py-2 text-xs text-orange-100/80 text-center border border-orange-400/20 hover:border-orange-400/40 hover:bg-orange-500/20 transition-all"
-                >
-                  {course}
-                </div>
-              ))}
-            </div>
-          </div> */}
         </div>
       ),
     },
@@ -141,13 +123,6 @@ export default function Education() {
               </span>
             </div>
           </div>
-          
-          {/* <div className="mt-6 bg-orange-500/5 rounded-lg p-4 border border-orange-400/20">
-            <p className="text-sm text-orange-100/80 leading-relaxed">
-              Completed secondary education with strong academic performance across all subjects. 
-              Established fundamental knowledge in mathematics, science, and languages that paved the way for higher studies in technology.
-            </p>
-          </div> */}
         </div>
       ),
     },

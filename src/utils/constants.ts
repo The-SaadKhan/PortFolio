@@ -12,7 +12,7 @@
     university: 'Bennett University',
     degree: 'B.Tech in Computer Science and Engineering',
     graduationYear: '2026',
-    cgpa: '8.4/10 (till 7th semester)'
+    cgpa: '8.5/10'
   }
 
   export const SKILLS = {
